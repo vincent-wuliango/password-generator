@@ -20,24 +20,43 @@ const chars = {
 };
 
 // 3. Listen for clicks
-generateBtn.addEventListener('click', () => {
-    const length = +lengthEl.value; // The '+' turns the text into a number
-    const hasUpper = uppercaseEl.checked;
-    const hasLower = lowercaseEl.checked;
-    const hasNumber = numbersEl.checked;
-    const hasSymbol = symbolsEl.checked;
-    const isAmbiguous = ambiguousEl.checked;
+generateBtn.addEventListener('click', async () => {
+    // 1. Get the length from the slider
+    const length = +lengthEl.value;
 
-    resultEl.innerText = generatePassword(
-        length,
-        hasUpper,
-        hasLower,
-        hasNumber,
-        hasSymbol,
-        isAmbiguous
-    );
+    // 2. Visual Feedback: Tell user we are working
+    resultEl.innerText = "Connecting to Server...";
+    resultEl.style.color = "#a29bfe"; // Purple text while loading
+    generateBtn.disabled = true;      // Prevent double-clicking
+    generateBtn.innerText = "Generating...";
 
-    updateStrengthMeter(resultEl.innerText);
+    try {
+        // 3. THE API CALL
+        const apiUrl = `https://password-api-dun.vercel.app/api/generate?length=${length}`;
+
+        const response = await fetch(apiUrl);
+
+        // 4. Check if server responded correctly
+        if (!response.ok) throw new Error('Server Error');
+
+        const data = await response.json();
+
+        // 5. Update the UI with the Server's Password
+        resultEl.innerText = data.password;
+        resultEl.style.color = "#4caf50"; // Green text for success
+
+        // Update the strength meter based on the new password
+        updateStrengthMeter(data.password);
+
+    } catch (error) {
+        console.error(error);
+        resultEl.innerText = "Error fetching data!";
+        resultEl.style.color = "red";
+    } finally {
+        // 6. Reset button state (always runs)
+        generateBtn.disabled = false;
+        generateBtn.innerText = "Generate Password";
+    }
 });
 
 // 4. The Core Logic Function
