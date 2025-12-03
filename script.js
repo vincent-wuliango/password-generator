@@ -24,20 +24,28 @@ generateBtn.addEventListener('click', async () => {
     // 1. Get the length from the slider
     const length = +lengthEl.value;
 
-    // 2. Visual Feedback: Tell user we are working
+    // 2. Capture the checkbox states
+    const hasUpper = uppercaseEl.checked;
+    const hasLower = lowercaseEl.checked;
+    const hasNumber = numbersEl.checked;
+    const hasSymbol = symbolsEl.checked;
+
+    // Check if everything is unchecked
+    if (!hasUpper && !hasLower && !hasNumber && !hasSymbol) {
+        resultEl.innerText = "Select at least one option!";
+        resultEl.style.color = "#ff9800"; // Orange warning color
+        return;
+    }
+    // ---------------------------
+
+    // Visual Feedback
     resultEl.innerText = "Connecting to Server...";
-    resultEl.style.color = "#a29bfe"; // Purple text while loading
-    generateBtn.disabled = true;      // Prevent double-clicking
+    resultEl.style.color = "#a29bfe";
+    generateBtn.disabled = true;
     generateBtn.innerText = "Generating...";
 
     try {
         // 3. THE API CALL
-        //Capture the checkbox states (True/False)
-        const hasUpper = uppercaseEl.checked;
-        const hasLower = lowercaseEl.checked;
-        const hasNumber = numbersEl.checked;
-        const hasSymbol = symbolsEl.checked;
-
         // Build the URL with all parameters
         const apiUrl = `https://password-generator-api-dun.vercel.app/api/generate?length=${length}&upper=${hasUpper}&lower=${hasLower}&number=${hasNumber}&symbol=${hasSymbol}`;
 
