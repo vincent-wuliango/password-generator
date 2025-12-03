@@ -39,7 +39,7 @@ generateBtn.addEventListener('click', async () => {
         const hasSymbol = symbolsEl.checked;
 
         // Build the URL with all parameters
-        const apiUrl = `https://password-api-dun.vercel.app/api/generate?length=${length}&upper=${hasUpper}&lower=${hasLower}&number=${hasNumber}&symbol=${hasSymbol}`;
+        const apiUrl = `https://password-generator-api-dun.vercel.app/api/generate?length=${length}&upper=${hasUpper}&lower=${hasLower}&number=${hasNumber}&symbol=${hasSymbol}`;
 
         const response = await fetch(apiUrl);
 
