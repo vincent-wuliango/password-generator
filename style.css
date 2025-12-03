@@ -146,3 +146,30 @@ input[type="number"] {
 .transition-overlay.hidden {
     opacity: 0;
 }
+
+/* --- Toast Notification Styling --- */
+#toast {
+    visibility: hidden; /* Hidden by default */
+    min-width: 250px;
+    background-color: #333; /* Dark background */
+    color: #fff; /* White text */
+    text-align: center;
+    border-radius: 50px; /* Pill shape */
+    padding: 16px;
+    position: fixed; /* Stays in place when scrolling */
+    z-index: 1000; /* On top of everything */
+    left: 50%;
+    bottom: 30px; /* Position at bottom center */
+    transform: translateX(-50%); /* Center perfectly */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.5s, bottom 0.5s; /* Smooth fade animation */
+    font-size: 14px;
+}
+
+/* The class we will add with JS to make it appear */
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px; /* Moves up slightly when appearing */
+}

@@ -74,6 +74,19 @@ generateBtn.addEventListener('click', async () => {
     }
 });
 
+// Helper Function for the Toast
+function showToast() {
+    const toast = document.getElementById("toast");
+
+    // Add the "show" class to make it visible
+    toast.className = "show";
+
+    // After 3 seconds, remove the class to hide it again
+    setTimeout(function(){
+        toast.className = toast.className.replace("show", "");
+    }, 3000);
+}
+
 // 4. The Core Logic Function
 function generatePassword(length, upper, lower, number, symbol, ambiguous) {
     let generatedPassword = '';
@@ -111,18 +124,21 @@ function generatePassword(length, upper, lower, number, symbol, ambiguous) {
 
 // 5. Copy to Clipboard
 copyBtn.addEventListener('click', () => {
-    const textarea = document.createElement('textarea');
     const password = resultEl.innerText;
 
-    if (!password || password === 'CLICK GENERATE') return;
+    // Safety check: Don't copy if empty or placeholder text
+    if (!password || password === 'CLICK GENERATE' || password === 'Connecting to Server...') return;
 
-    textarea.value = password;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    textarea.remove();
-
-    alert('Password copied to clipboard!');
+    navigator.clipboard.writeText(password)
+        .then(() => {
+            // Success! Show the toast
+            showToast();
+        })
+        .catch(err => {
+            console.error('Failed to copy text: ', err);
+            // Fallback for very old browsers (optional, usually not needed nowadays)
+            alert("Failed to copy password.");
+        });
 });
 
 // 6. Visual Strength Meter
