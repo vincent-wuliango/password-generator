@@ -32,7 +32,14 @@ generateBtn.addEventListener('click', async () => {
 
     try {
         // 3. THE API CALL
-        const apiUrl = `https://password-api-dun.vercel.app/api/generate?length=${length}`;
+        //Capture the checkbox states (True/False)
+        const hasUpper = uppercaseEl.checked;
+        const hasLower = lowercaseEl.checked;
+        const hasNumber = numbersEl.checked;
+        const hasSymbol = symbolsEl.checked;
+
+        // Build the URL with all parameters
+        const apiUrl = `https://password-api-dun.vercel.app/api/generate?length=${length}&upper=${hasUpper}&lower=${hasLower}&number=${hasNumber}&symbol=${hasSymbol}`;
 
         const response = await fetch(apiUrl);
 
